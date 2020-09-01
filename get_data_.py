@@ -3,7 +3,7 @@ import json
 import time
 import mysql.connector as sql
 
-def get_database(db='movie_track_rec_sys'):
+def get_database(db='my_movie_bucket'):
 	db=sql.connect(host="localhost",
 	user="root",
 	password="",
@@ -19,7 +19,7 @@ def insert(table,cols,values,url=""):
 
 	db=get_database()
 	c=get_cursor(db)
-	sql="insert into %s %s values %s"%(table,str(cols).replace("'",""),str(values))
+	sql="insert into %s %s values %s"%("movie_bucket_"+table,str(cols).replace("'",""),str(values))
 	try:
 		c.execute(sql)
 		db.commit()
@@ -48,11 +48,11 @@ headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleW
 
 urls=[
 'https://api.themoviedb.org/3/movie/upcoming?api_key=c1371addc23fee06162831af28edc760&region=IN&language=hi-IN',
-'https://api.themoviedb.org/3/movie/latest?api_key=c1371addc23fee06162831af28edc760&region=IN&language=hi-IN',
-'https://api.themoviedb.org/3/movie/popular?api_key=c1371addc23fee06162831af28edc760&region=IN&language=hi-IN'
+'https://api.themoviedb.org/3/movie/popular?api_key=c1371addc23fee06162831af28edc760&region=IN&language=hi-IN',
+'https://api.themoviedb.org/3/movie/latest?api_key=c1371addc23fee06162831af28edc760&region=IN&language=hi-IN'
 ]
 
-urls=['https://api.themoviedb.org/3/movie/latest?api_key=c1371addc23fee06162831af28edc760&region=IN&language=hi-IN']
+#urls=['https://api.themoviedb.org/3/movie/latest?api_key=c1371addc23fee06162831af28edc760&region=IN&language=hi-IN']
 
 def fetch(url,page_):
 	

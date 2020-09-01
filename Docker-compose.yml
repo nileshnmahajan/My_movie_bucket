@@ -1,0 +1,14 @@
+version:
+'3'services:
+web:
+build:
+.
+command:
+cd
+my_movie_buckt
+python3
+manage.py
+runserver
+0.0.0.0:8888
+ports:
+[8888]

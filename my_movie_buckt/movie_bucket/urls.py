@@ -16,7 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from movie_bucket import views
-
+from django.views.decorators.csrf import csrf_exempt
+from movie_bucket.views import  signup_view
+from django.conf.urls import url
+from graphene_django.views import GraphQLView
+from movie_bucket.schema import schema
 urlpatterns = [
-    path('main/', views.main),
+    path('', views.main),
+    path('signup/', signup_view, name="signup"),
+    path('graphql/', csrf_exempt(GraphQLView.as_view(graphiql=True, schema=schema))),
+  
 ]

@@ -17,7 +17,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'm*%f06ro5*bdzd)v&##mdjy7v++&a9f+i@c$fj-*9u=)$@w-b$'
 
@@ -36,6 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'movie_bucket',
+    'graphene_django',
 
 ]
 
@@ -45,10 +45,17 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
+# Authentication backends
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+        'graphql_jwt.backends.JSONWebTokenBackend',
+]
 ROOT_URLCONF = 'my_movie_buckt.urls'
 
 TEMPLATES = [
@@ -82,7 +89,7 @@ create user dbadmin identified by ‘12345’;
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'movie_track_rec_sys',
+        'NAME': 'my_movie_bucket',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',
@@ -133,3 +140,16 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 TEMPLATE_URL='/templates/'
+
+
+
+
+GRAPHENE = {
+    'SCHEMA': 'movie_bucket.schema.schema',
+    'MIDDLEWARE':['graphql_jwt.middleware.JSONWebTokenMiddleware'],
+}
+
+#defaul /accounts/profile/
+LOGIN_REDIRECT_URL = '/'
+
+LOGIN_URL='/login/'
