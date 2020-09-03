@@ -11,18 +11,27 @@
 <body>
 
 <div id="menu">
-    <a href="/">latest</a>
-    <a href="/Recomended">Recomended</a>
+
+    <a href="/">Home</a>
     <a href="/watch_list">Watched list</a>
-    
 
 </div>
 <div id="rec">
+
+
+
+
 </div>
 
 <div id="body">
-
-
+{% for movie in data %}
+                <a class="movie" href="/movie/{{movie.id}}/")">
+                <img src="https://image.tmdb.org/t/p/w440_and_h660_face/{{movie.poster_path}}"/>
+                <div class="title">{{movie.title}}</div>
+                <div class="date">{{movie.time}}</div>
+                <div class="lang">{{movie.lang}}</div>\
+                </a>
+{% endfor %}
 </div>
 
 <div id="detail">

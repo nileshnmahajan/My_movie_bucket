@@ -4,33 +4,39 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.contrib.auth import get_user_model
+from graphene_django.types import DjangoObjectType, ObjectType
+from django.conf import settings
+
+
 class movie(models.Model):
     id                     =models.BigIntegerField(primary_key=True,help_text='Enter field documentati  on')                   
-    popularity             =models.FloatField(default='')                         
-    vote_count             =models.BigIntegerField(default='')                     
-    video                  =models.BooleanField(default='')                     
-    poster_path            =models.TextField(default='')                       
-    adult                  =models.BooleanField(default='')                     
-    backdrop_path          =models.TextField(default='')                       
-    original_language      =models.CharField(max_length=2,default='')                  
-    original_title         =models.TextField(default='')                       
-    genre_ids              =models.TextField(default='')                       
-    title                  =models.TextField(default='')                       
-    vote_average           =models.IntegerField(default='')                        
-    overview               =models.TextField(default='')                       
-    release_date          = models.DateField(default='')                           
-    belongs_to_collection  =models.TextField(default='')                       
-    budget                 =models.TextField(default='')                       
-    genres                 =models.TextField(default='')                       
-    homepage               =models.TextField(default='')                       
-    imdb_id                =models.TextField(default='')                       
-    production_companies   =models.TextField(default='')                       
-    production_countries   =models.TextField(default='')                       
-    revenue                =models.TextField(default='')                       
-    runtime                =models.TextField(default='')                       
-    spoken_languages       =models.TextField(default='')                       
-    status                 =models.TextField(default='')                       
-    tagline                =models.TextField(default='')
+    popularity             =models.FloatField(default='',null=True)                         
+    vote_count             =models.BigIntegerField(default='',null=True)                     
+    video                  =models.BooleanField(default='',null=True)                     
+    poster_path            =models.TextField(default='',null=True)                       
+    adult                  =models.BooleanField(default='',null=True)                     
+    backdrop_path          =models.TextField(default='',null=True)                       
+    original_language      =models.CharField(max_length=2,default='',null=True)                  
+    original_title         =models.TextField(default='',null=True)                       
+    genre_ids              =models.TextField(default='',null=True)                       
+    title                  =models.TextField(default='',null=True)                       
+    vote_average           =models.IntegerField(default='',null=True)                        
+    overview               =models.TextField(default='',null=True)                       
+    release_date          = models.TextField(default='',null=True)                           
+    belongs_to_collection  =models.TextField(default='',null=True)                       
+    budget                 =models.TextField(default='',null=True)                       
+    genres                 =models.TextField(default='',null=True)                       
+    homepage               =models.TextField(default='',null=True)                       
+    imdb_id                =models.TextField(default='',null=True)                       
+    production_companies   =models.TextField(default='',null=True)                       
+    production_countries   =models.TextField(default='',null=True)                       
+    revenue                =models.TextField(default='',null=True)                       
+    runtime                =models.TextField(default='',null=True)                       
+    spoken_languages       =models.TextField(default='',null=True)                       
+    status                 =models.TextField(default='',null=True)                       
+    tagline                =models.TextField(default='',null=True)
+    
 
 
 
@@ -51,15 +57,18 @@ class movie(models.Model):
         pass
 
 
-class my_bucket(models.Model):
-    id =models.BigIntegerField(primary_key=True)
-    movie_id=models.ManyToManyField(movie)
-    time=models.DateTimeField(default='')
+
+
+
+class watch(models.Model):
+
+    user_id= models.ForeignKey(get_user_model(), null=True,  on_delete=models.CASCADE)
+    movie_id= models.ForeignKey(movie, null=True,  on_delete=models.CASCADE)
+    #get_user_model()
+    time=models.TextField(default='',null=True)
 
     class Meta:
         ordering=tuple(['time'])
 
     def __str__(self):
         return str(self.id)
-
-

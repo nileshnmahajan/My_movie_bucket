@@ -89,16 +89,20 @@ create user dbadmin identified by ‘12345’;
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'my_movie_bucket',
+        'NAME': 'movie_db',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '3306',
-        'OPTIONS':{'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        'OPTIONS':{
+        'init_command': 'ALTER DATABASE movie_db CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci',
         'charset': 'utf8mb4',
         },
     }
 }
+
+
+
 
 #DATABASES['default']['OPTIONS'] = {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
 # Password validation

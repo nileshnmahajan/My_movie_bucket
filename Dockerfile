@@ -32,10 +32,7 @@ RUN pip3 install pipenv
 RUN pipenv install --skip-lock --system --dev
 
 
-COPY ./requirements.txt /app/requirements.txt
+COPY requirements.txt /app/
 RUN pip3 install -r requirements.txt
-COPY . /app
+COPY . /app/
 
-
-
-CMD gunicorn cfehome.wsgi:application --bind 0.0.0.0:$PORT

@@ -21,8 +21,12 @@ from movie_bucket.views import  signup_view
 from django.conf.urls import url
 from graphene_django.views import GraphQLView
 from movie_bucket.schema import schema
+from django.urls import path, re_path
 urlpatterns = [
     path('', views.main),
+    re_path(r'^movie/[0-9]+/$', views.main),
+    re_path(r'^watch_list/$', views.main),
+    re_path(r'^Recomended', views.rec),
     path('signup/', signup_view, name="signup"),
     path('graphql/', csrf_exempt(GraphQLView.as_view(graphiql=True, schema=schema))),
   

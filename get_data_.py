@@ -3,16 +3,37 @@ import json
 import time
 import mysql.connector as sql
 
-def get_database(db='my_movie_bucket'):
+
+
+
+def get_database(db='movie_db'):
 	db=sql.connect(host="localhost",
 	user="root",
 	password="",
-	database=db)
+	database=db,
+	charset='utf8',
+	)
 	return db
-	
 def get_cursor(db):
 	c=db.cursor()
 	return c
+
+db=get_database()
+c=get_cursor(db)
+
+qs=['ALTER DATABASE movie_db CHARACTER SET = utf8mb4 COLLATE utf8mb4_unicode_ci',
+'ALTER TABLE movie_bucket_movie CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci',
+'ALTER TABLE movie_bucket_movie CHANGE title title LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci',
+'ALTER TABLE movie_bucket_movie CHANGE original_title original_title LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci',
+'ALTER TABLE movie_bucket_movie CHANGE overview overview LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci']
+
+for i in qs:
+	c.execute(i)
+
+db.commit()
+db.close()
+
+
 	
 	
 def insert(table,cols,values,url=""):

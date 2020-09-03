@@ -1,4 +1,4 @@
-from movie_bucket.models import movie,my_bucket
+from movie_bucket.models import movie,watch
 from graphene import ObjectType, Node, Schema
 import graphene
 from graphene_django.fields import DjangoConnectionField
@@ -21,7 +21,7 @@ class movieNode(DjangoObjectType):
 
 class mybucketNode(DjangoObjectType):
     class Meta:
-        model = my_bucket
+        model = watch
 
 
 class Query(ObjectType):
@@ -29,19 +29,25 @@ class Query(ObjectType):
     movie = Node.Field(movieNode)
     movies = DjangoConnectionField(movieNode)
 
-    my_bucket = Node.Field(mybucketNode)
-    my_buckets = DjangoConnectionField(mybucketNode)
+    movie_bucket = Node.Field(mybucketNode)
+    movie_buckets = DjangoConnectionField(mybucketNode)
 
     '''
-    my_bucket = graphene.Field(mybucketNode, id=graphene.Int())
     movie = graphene.Field(movieNode, id=graphene.Int())
-    my_buckets = graphene.List(mybucketNode)
-    movies= graphene.List(movieNode)
+    
+    Watchs = graphene.List(mybucketNode)
+    movies= graphene.List(movieNode,offset=graphene.Int())
+    iswatched=graphene.List(mybucketNode,id=graphene.Int())
+    
+
     user=graphene.Field(UserType, id=graphene.Int())
  
     users = graphene.List(UserType)
     me = graphene.Field(UserType)
     
+
+    def resolve_iswatched(self,info,id):   
+        return watch.objects.filter(user_id_id=info.context.user.id,movie_id_id=id)
     
     @login_required
     def resolve_me(self, info):
@@ -64,24 +70,22 @@ class Query(ObjectType):
         return get_user_model().objects.all()
 
 
-    def resolve_my_bucket(self, info, **kwargs):
-        id = kwargs.get('id')
-        if id is not None:
-            return my_bucket.objects.get(pk=id)
-
-        return None
-
+ 
     def resolve_movie(self, info, **kwargs):
         id = kwargs.get('id')
         if id is not None:
             return movie.objects.get(pk=id)
         return None
 
-    def resolve_my_buckets(self, info, **kwargs):
-        return my_bucket.objects.all()
 
+    @login_required
+    def resolve_Watchs(self, info, **kwargs):
+        return watch.objects.filter(user_id_id=info.context.user.id)
+
+    @login_required
     def resolve_movies(self, info, **kwargs):
-        return movie.objects.all()
+        offset = kwargs.get('offset')
+        return movie.objects.all()[offset:offset+10]
 
 
 #********************************************************
@@ -120,7 +124,6 @@ class CreateProduct(graphene.Mutation):
     class Arguments:
         # The input arguments for this mutation
 
-        id = graphene.ID(required=False)
         movieId = graphene.Int(required=True)
        
     # The class attributes define the response of the mutation
@@ -129,17 +132,18 @@ class CreateProduct(graphene.Mutation):
     product = graphene.Field(mybucketNode)
 
 
-    def mutate(self, info,id,movieId):
-
+    def mutate(self, info,movieId):
+        if(watch.objects.filter(user_id_id=info.context.user.id,movie_id_id=movieId).count()>0):
+            return False
         now = datetime.datetime.now()
         now=now.strftime("%Y-%m-%d %H:%M:%S.%U")
         print("#",now)
 
-        question = my_bucket.objects.create(
-            id=id,
-            time=now
+        question = watch.objects.create(
+            time=now,
+            movie_id_id=movieId,
+            user_id_id=info.context.user.id
         )
-        question.movie_id.set(movieId)  
         question.save()
         # Notice we return an instance of this mutation
         # return an instance of the Mutation 🤷‍♀️

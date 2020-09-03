@@ -1,14 +1,18 @@
-version:
-'3'services:
-web:
-build:
-.
-command:
-cd
-my_movie_buckt
-python3
-manage.py
-runserver
-0.0.0.0:8888
-ports:
-[8888]
+version: '3'
+    
+  services:
+    db:
+      image: mysql
+      environment:
+        - MYSQL_DB=movie_db
+        - MYSQL_USER=root
+        - MYSQL_PASSWORD=
+    web:
+      build: .
+      command: python3 manage.py runserver 0.0.0.0:8000
+      volumes:
+        - .:/app
+      ports:
+        - "8000:8000"
+      depends_on:
+        - db
