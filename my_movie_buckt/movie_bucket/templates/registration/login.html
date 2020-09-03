@@ -1,11 +1,17 @@
-
-{% block title %}Login{% endblock %}
+<html>
+<head>
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/form.css' %}"/>
+</head>
+<body>
 
 {% block content %}
+      <a href="/signup"><button type="submit">Go to Signup</button></a>
   <h2>Login</h2>
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Login</button>
   </form>
+
 {% endblock %}

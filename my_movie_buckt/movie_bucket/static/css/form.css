@@ -1,0 +1,64 @@
+
+body
+{
+ text-align: center;
+  margin:0px;
+}
+
+form
+{
+
+  text-align: left;
+  background-color: whitesmoke;
+  padding: 50px;
+  max-width:500px;
+  margin:auto;
+  font-size:28px;
+}
+
+form input,form button
+{
+
+    font-size:20px;
+}
+
+form button
+{
+  border: none;
+  font-size: 30px;
+  background-color: gray;
+  color: white;
+  padding: 4px 30px;
+}
+
+a{
+
+  display: block;
+  
+  background-color: blueviolet;
+  width: 100%;
+  text-decoration: none;
+  padding: 10px;
+
+}
+
+a button
+{
+  padding: 10px;
+background-color: transparent;
+  color: white;
+  display: block;
+font-size: 20px;
+  text-align: right;
+  text-decoration: none;
+  border: none;  
+}
+a button:hover
+{
+  background-color: black;
+}
+form button:hover
+{
+  background-color: green;
+  cursor: pointer;
+}

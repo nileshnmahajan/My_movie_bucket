@@ -44,6 +44,9 @@ function main(event)
 
 
     var path=url_object.pathname.split("/");
+
+    $("#rec").empty();
+
     switch(path[1])
     {
         case "":
@@ -64,7 +67,7 @@ function main(event)
             get_reco();
             break;    
     }
-
+    $("#rec").append(current_open);
 }
 
 function infinite_scroll()
